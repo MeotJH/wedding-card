@@ -1,6 +1,108 @@
 .App {
   text-align: center;
+  background-color: #0a192f; /* Deep navy blue from Invitation.css */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  overflow: hidden; /* Prevent scrollbars from rain */
 }
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Syncopate:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('../public/assets/couple1.jpg'); /* Overlay with image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0; /* Start hidden for fade-in effect */
+  animation: fadeIn 1s forwards; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.welcome-message {
+  font-size: 1.8em; /* Slightly larger font */
+  margin-bottom: 5px; /* More space below message */
+  text-align: center;
+  line-height: 1.6; /* Improved readability */
+  font-weight: 700; /* Bolder for impact */
+  color: #64ffda; /* Neon cyan for emphasis */
+  text-shadow: 0 0 5px rgba(100, 255, 218, 0.5), 0 0 10px rgba(100, 255, 218, 0.5); /* Cyberpunk glow */
+  max-width: 80%; /* Limit width for better line length */
+}
+
+.start-button {
+  margin-top:30px; /* More space below message */
+  padding: 15px 40px; /* More padding for a larger button */
+  font-size: 1.3em; /* Larger font size */
+  background-color: #1c2a4a; /* Card background color */
+  color: #64ffda; /* Neon cyan text */
+  border: 2px solid #64ffda; /* Neon border */
+  border-radius: 5px; /* Slightly less rounded, more angular */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.5); /* Glowing shadow */
+  font-family: 'Syncopate', sans-serif; /* Cyberpunk heading font */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.start-button:hover {
+  background-color: #64ffda; /* Invert colors on hover */
+  color: #0a192f; /* Dark text on neon background */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.8); /* More intense glow on hover */
+}
+
+/* Video Wrapper and Skip Button Styles */
+.video-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skip-button {
+  position: absolute;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: rgba(28, 42, 74, 0.7); /* Semi-transparent card background */
+  color: #64ffda; /* Neon cyan text */
+  border: 1px solid #64ffda; /* Neon border */
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for position changes */
+  font-family: 'Rajdhani', sans-serif; /* Consistent body font */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 5px rgba(100, 255, 218, 0.3);
+  z-index: 1001; /* Ensure it's above the video */
+}
+
+.skip-button:hover {
+  background-color: #64ffda; /* Invert colors on hover */
+  color: #0a192f; /* Dark text on neon background */
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.6);
+}
+
+/* Existing styles below */
 
 .App-logo {
   height: 40vmin;
@@ -34,5 +136,58 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.App.invitation-visible {
+  display: block;
+  overflow: visible; /* Let the body handle scrolling */
+  height: auto;
+}
+
+/* Cyberpunk Toast Styles */
+.cyberpunk-toast {
+  background: #0a192f !important;
+  border: 2px solid #64ffda !important;
+  color: #ccd6f6 !important;
+  font-family: 'Rajdhani', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.7) !important;
+  animation: glitch 0.75s 2; /* Run the animation twice */
+}
+
+.cyberpunk-toast-body {
+  color: #ccd6f6 !important;
+}
+
+.cyberpunk-toast-progress {
+  background: #64ffda !important;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.7);
+  }
+  20% {
+    transform: translate(-5px, 5px);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+  }
+  40% {
+    transform: translate(-5px, -5px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+  }
+  60% {
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+  }
+  80% {
+    transform: translate(5px, -5px);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  }
+  100% {
+    transform: translate(0);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.7);
   }
 }
