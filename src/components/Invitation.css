@@ -1,4 +1,13 @@
 /* Mobile-First Approach */
+.initial-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .chungking-theme {
   padding: 80px 20px; /* Adjusted padding for mobile */
 }
@@ -40,6 +49,7 @@
 .main-card .invitation-message {
   font-size: 1em;
   line-height: 1.7;
+  word-break: keep-all;
 }
 
 h2 {
@@ -126,6 +136,10 @@ h2 {
 
 p {
   color: #a8b2d1;
+}
+
+.gallery-section{
+  padding-bottom: 40px;
 }
 
 .location-section h2, .guestbook-section h2, .gallery-section h2, .contact-section h2 {

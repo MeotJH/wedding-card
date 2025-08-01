@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Video.css';
 
-const Video = ({ onVideoEnd }) => {
+const Video = ({ onVideoEnd, isMuted }) => {
   const [fadeOut, setFadeOut] = useState(false);
   const playerRef = useRef(null);
 
+  // Effect for player initialization
   useEffect(() => {
-    // Load the YouTube IFrame Player API script
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    const handleVideoEnd = () => {
+      setFadeOut(true);
+      setTimeout(onVideoEnd, 1000); // Corresponds to the fade-out duration
+    };
 
-    window.onYouTubeIframeAPIReady = () => {
+    const createPlayer = () => {
       playerRef.current = new window.YT.Player('youtube-player', {
         videoId: 'bTGIUz3qKcQ', // YouTube Shorts video ID
         playerVars: {
@@ -21,12 +21,12 @@ const Video = ({ onVideoEnd }) => {
           disablekb: 1,
           fs: 0,
           iv_load_policy: 3,
-          loop: 1,
+          loop: 0, // Loop is disabled to allow onStateChange ENDED event to fire reliably
           modestbranding: 1,
           playsinline: 1,
           rel: 0,
           showinfo: 0,
-          mute: 1, // Mute the video to allow autoplay on mobile
+          mute: isMuted ? 1 : 0, // Set initial mute state
         },
         events: {
           onReady: (event) => {
@@ -41,14 +41,18 @@ const Video = ({ onVideoEnd }) => {
       });
     };
 
-    const handleVideoEnd = () => {
-      setFadeOut(true);
-      setTimeout(onVideoEnd, 1000); // Corresponds to the fade-out duration
-    };
+    if (window.YT && window.YT.Player) {
+      createPlayer();
+    } else {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      window.onYouTubeIframeAPIReady = createPlayer;
+    }
 
     const handleScroll = () => {
-      setFadeOut(true);
-      setTimeout(onVideoEnd, 1000);
+      handleVideoEnd();
       window.removeEventListener('scroll', handleScroll);
     };
 
@@ -56,11 +60,25 @@ const Video = ({ onVideoEnd }) => {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      if (playerRef.current) {
+      if (playerRef.current && typeof playerRef.current.destroy === 'function') {
         playerRef.current.destroy();
       }
+      window.onYouTubeIframeAPIReady = null;
     };
+    // This effect should run only once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onVideoEnd]);
+
+  // Effect for updating mute state
+  useEffect(() => {
+    if (playerRef.current && typeof playerRef.current.mute === 'function' && typeof playerRef.current.unMute === 'function') {
+      if (isMuted) {
+        playerRef.current.mute();
+      } else {
+        playerRef.current.unMute();
+      }
+    }
+  }, [isMuted]);
 
   return (
     <div className={`video-container ${fadeOut ? 'fade-out' : ''}`}>

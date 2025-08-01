@@ -21,7 +21,7 @@
   height: 100vh;
   width: 100vw;
   background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('../public/assets/couple1.jpg'); /* Overlay with image */
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   padding: 20px;
@@ -46,6 +46,17 @@
   max-width: 80%; /* Limit width for better line length */
 }
 
+.noti-message {
+  font-size: 0.9em; /* Slightly larger font */
+  margin-bottom: 5px; /* More space below message */
+  text-align: center;
+  line-height: 1.6; /* Improved readability */
+  font-weight: 700; /* Bolder for impact */
+  color: #64ffda; /* Neon cyan for emphasis */
+  text-shadow: 0 0 5px rgba(100, 255, 218, 0.5), 0 0 10px rgba(100, 255, 218, 0.5); /* Cyberpunk glow */
+  max-width: 80%; /* Limit width for better line length */
+}
+
 .start-button {
   margin-top:30px; /* More space below message */
   padding: 15px 40px; /* More padding for a larger button */
@@ -60,6 +71,31 @@
   font-family: 'Syncopate', sans-serif; /* Cyberpunk heading font */
   text-transform: uppercase;
   letter-spacing: 2px;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px; /* Space between buttons */
+  margin-top: 30px;
+}
+
+.start-button-muted {
+  padding: 15px 40px;
+  font-size: 1.3em;
+  background-color: transparent; /* Transparent background */
+  color: #64ffda; /* Neon cyan text */
+  border: 2px solid #64ffda; /* Neon border */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Syncopate', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.start-button-muted:hover {
+  background-color: #64ffda;
+  color: #0a192f;
 }
 
 .start-button:hover {
