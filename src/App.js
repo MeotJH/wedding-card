@@ -1,38 +1,43 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './App.css';
-import Video from './components/Video';
+import MediaController from './components/MediaController';
 import Invitation from './components/Invitation';
 import Rain from './components/Rain';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sound from './components/Sound';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
-  const [showVideo, setShowVideo] = useState(false);
+  const [playMedia, setPlayMedia] = useState(false);
   const [showInvitation, setShowInvitation] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [skipCount, setSkipCount] = useState(0);
   const [skipButtonPosition, setSkipButtonPosition] = useState({ bottom: 20, right: 20 });
-  const [skipVisible, setSkipVisible] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+      if (!isMuted) {
+        audioRef.current.play().catch(e => console.log(e));
+      }
+    }
+  }, [isMuted]);
 
   const handleVideoEnd = useCallback(() => {
-    setShowVideo(false);
+    setPlayMedia(false);
     setShowInvitation(true);
-    // Here you could start background music if you want, respecting the isMuted state.
+    if (audioRef.current) {
+      audioRef.current.play().catch(e => console.log(e));
+    }
   }, []);
 
   const handleStart = (muted) => {
     setIsMuted(muted);
     setShowWelcome(false);
-    setShowVideo(true);
-
-    // Show skip button after 3 seconds
-    setTimeout(() => {
-      setSkipVisible(true);
-    }, 3000);
+    setPlayMedia(true);
   };
 
   const handleSkipClick = () => {
@@ -53,9 +58,14 @@ function App() {
     }
   };
 
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
   return (
     <div className={`App ${showInvitation ? 'invitation-visible' : ''}`}>
       <Rain />
+      <audio ref={audioRef} src="/assets/background-music.mp3" loop />
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -78,20 +88,30 @@ function App() {
             <button className="start-button" onClick={() => handleStart(true)}>아니오</button>
           </div>
         </div>
-      ) : showVideo ? (
+      ) : playMedia ? (
         <div className="video-wrapper">
-          <Video onVideoEnd={handleVideoEnd} isMuted={isMuted} />
-          <button
-            className={`skip-button ${skipVisible ? '' : 'hide'}`}
+          <MediaController
+            onVideoEnd={handleVideoEnd}
+            isMuted={isMuted}
+            play={playMedia}
+            videoSrc="/assets/intro-video.mp4" 
+          />
+          {playMedia && <button
+            className="skip-button"
             style={skipButtonPosition}
             onClick={handleSkipClick}>
             건너뛰기
-          </button>
+          </button>}
         </div>
       ) : (
-        showInvitation && <Invitation />
+        showInvitation && 
+        <>
+          <Invitation />
+          <button onClick={toggleMute} className="mute-button">
+            {isMuted ? "Unmute" : "Mute"}
+          </button>
+        </>
       )}
-      {showInvitation && <Sound isMuted={isMuted} playing={showInvitation} />}
     </div>
   );
 }
