@@ -1,0 +1,45 @@
+// Firebase Firestore 보안 규칙
+// Firebase Console에서 Firestore Database -> Rules에 복사하여 사용
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // guestbook_messages 컬렉션 규칙
+    match /guestbook_messages/{document} {
+      // 모든 사용자가 읽기 가능
+      allow read: if true;
+      
+      // 모든 사용자가 생성 가능 (단, 필수 필드가 있는 경우에만)
+      allow create: if request.auth == null 
+                    && resource == null
+                    && validateMessage(request.resource.data);
+      
+      // 수정/삭제는 불가능 (방명록 특성상)
+      allow update, delete: if false;
+    }
+    
+    // 기본적으로 다른 모든 문서는 접근 불가
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// 메시지 데이터 유효성 검사 함수
+function validateMessage(data) {
+  return data.keys().hasAll(['name', 'message', 'posX', 'posY', 'createdAt'])
+         && data.name is string
+         && data.name.size() > 0
+         && data.name.size() <= 100
+         && data.message is string  
+         && data.message.size() > 0
+         && data.message.size() <= 1000
+         && data.posX is number
+         && data.posX >= 0
+         && data.posX <= 100
+         && data.posY is number
+         && data.posY >= 0
+         && data.posY <= 100
+         && data.createdAt is timestamp;
+}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Invitation.css';
 import Slider from "react-slick";
 
 const Invitation = () => {
   const sections = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,7 +69,7 @@ const Invitation = () => {
           <p className="date">2025년 12월 25일</p>
           <div className="divider"></div>
           <p className="invitation-message">
-            저희 두 사람, 결혼합니다. 친족분들만 모시는 소규모 예식으로 소박하게 진행할 계획입니다. 직접 초대하여 인사드리지 못하는점 아쉽게 생각하고 있습니다. 이 글로나마 저희의 기쁨을 함께 나누고 축복해 주시면 감사하겠습니다.
+            저희 두 사람, 결혼합니다. 가족분들만 모시는 소규모 예식으로 소박하게 진행할 계획입니다. 직접 초대하여 인사드리지 못하는점 아쉽게 생각하고 있습니다. 이 글로나마 저희의 기쁨을 함께 나누고 축복해 주시면 감사하겠습니다.
           </p>
           <p className="invitation-message">부부 올림</p>        
         </div>
@@ -95,9 +97,29 @@ const Invitation = () => {
           <p>신부 김수경: <a href="tel:010-1234-5678">010-4441-5735</a></p>
         </div>
 
-        <div className="card guestbook-section" ref={el => sections.current[5] = el}>
-          <h2>축하 메시지 남기기</h2>
-          <p>하객들이 축하 메시지를 남길 수 있는 공간</p>
+        <div 
+          className="card guestbook-section" 
+          ref={el => sections.current[5] = el}
+          onClick={() => navigate('/guestbook')}
+        >
+          <div className="guestbook-icon">💖</div>
+          <h3>당신의 한마디를 남겨주세요</h3>
+          <p>소중한 분들의 축복이 우리의 행복이 됩니다</p>
+          <div className="click-hint">
+            <span>클릭하여 방명록 보기</span>
+            <div className="arrow-container">
+              <span className="arrow">→</span>
+              <span className="arrow">→</span>
+              <span className="arrow">→</span>
+            </div>
+          </div>
+          
+          <div className="floating-cta">
+            <div className="cta-button">
+              <span>방명록에 축복 남기기</span>
+              <div className="button-glow"></div>
+            </div>
+          </div>
         </div>
       </div>
     </>

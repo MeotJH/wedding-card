@@ -1,0 +1,624 @@
+.guestbook-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8ed 30%, #ffd6dd 70%, #ffccd5 100%);
+  color: #8b5a6b;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.guestbook-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.arch-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.1;
+  filter: blur(2px);
+}
+
+.arch-fallback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  filter: drop-shadow(0 10px 30px rgba(255, 182, 193, 0.3));
+}
+
+.arch-shape {
+  width: 700px;
+  height: 450px;
+  position: relative;
+  transform: perspective(1000px) rotateX(3deg);
+}
+
+/* 곡선형 아치 베이스 - 사진과 같은 형태 */
+.curved-arch {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 8px solid transparent;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 182, 193, 0.05) 50%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  backdrop-filter: blur(1px);
+  box-shadow: 
+    inset 0 0 30px rgba(255, 255, 255, 0.2),
+    0 0 50px rgba(255, 182, 193, 0.1);
+}
+
+/* 꽃들 - 다양한 크기와 위치 */
+.flower {
+  position: absolute;
+  border-radius: 50%;
+  animation: flowerGlow 4s ease-in-out infinite alternate;
+}
+
+/* 핑크 꽃들 */
+.flower.pink {
+  background: radial-gradient(circle at 30% 30%, #fff0f5 0%, #ffc0cb 30%, #ffb6c1 60%, #ff91a4 100%);
+  box-shadow: 
+    0 0 20px rgba(255, 182, 193, 0.8),
+    inset 2px 2px 6px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px rgba(255, 145, 164, 0.3),
+    0 6px 20px rgba(255, 182, 193, 0.6),
+    0 0 35px rgba(255, 182, 193, 0.4);
+}
+
+/* 흰색 꽃들 */
+.flower.white {
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fffaff 40%, #f8f8ff 70%, #f0f0f0 100%);
+  box-shadow: 
+    0 0 25px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 6px rgba(255, 255, 255, 1),
+    inset -2px -2px 6px rgba(240, 240, 240, 0.3),
+    0 8px 25px rgba(255, 255, 255, 0.7),
+    0 0 40px rgba(255, 255, 255, 0.5);
+}
+
+/* 연한 핑크 꽃들 */
+.flower.light-pink {
+  background: radial-gradient(circle at 30% 30%, #fff5f8 0%, #ffe4e6 40%, #ffd6d9 70%, #ffcccf 100%);
+  box-shadow: 
+    0 0 18px rgba(255, 204, 207, 0.7),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 5px rgba(255, 204, 207, 0.2),
+    0 5px 18px rgba(255, 204, 207, 0.5),
+    0 0 30px rgba(255, 204, 207, 0.3);
+}
+
+@keyframes flowerGlow {
+  0% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% { 
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+}
+
+/* 꽃 사이즈 정의 */
+.flower-large {
+  width: 40px;
+  height: 40px;
+}
+
+.flower-medium {
+  width: 28px;
+  height: 28px;
+}
+
+.flower-small {
+  width: 18px;
+  height: 18px;
+}
+
+/* 상단 중앙 큰 꽃들 - 자연스러운 배치 */
+.flower1 { top: 28px; left: 235px; transform: rotate(15deg); }
+.flower2 { top: 22px; left: 275px; transform: scale(1.15) rotate(-10deg); }
+.flower3 { top: 38px; left: 315px; transform: rotate(25deg); }
+.flower4 { top: 42px; left: 195px; transform: scale(0.85) rotate(-20deg); }
+.flower5 { top: 48px; left: 355px; transform: scale(0.75) rotate(30deg); }
+.flower18 { top: 18px; left: 295px; transform: scale(1.1) rotate(-5deg); }
+.flower19 { top: 52px; left: 255px; transform: scale(0.9) rotate(40deg); }
+
+/* 중간 크기 꽃들 */
+.flower-medium {
+  width: 25px;
+  height: 25px;
+}
+
+/* 사이드 중간 꽃들 - 유기적 배치 */
+.flower6 { top: 78px; left: 42px; transform: rotate(-15deg); }
+.flower7 { top: 125px; left: 38px; transform: rotate(20deg); }
+.flower8 { top: 168px; left: 45px; transform: rotate(-25deg); }
+.flower9 { top: 82px; right: 42px; transform: rotate(15deg); }
+.flower10 { top: 118px; right: 38px; transform: rotate(-20deg); }
+.flower11 { top: 165px; right: 45px; transform: rotate(25deg); }
+.flower20 { top: 98px; left: 58px; transform: scale(0.95) rotate(35deg); }
+.flower21 { top: 145px; left: 52px; transform: scale(1.05) rotate(-30deg); }
+.flower22 { top: 185px; left: 48px; transform: scale(0.8) rotate(45deg); }
+.flower23 { top: 105px; right: 58px; transform: scale(0.9) rotate(-35deg); }
+
+/* 작은 꽃들 */
+.flower-small {
+  width: 18px;
+  height: 18px;
+}
+
+/* 작은 꽃들 - 자연스럽고 유기적 배치 */
+.flower12 { top: 62px; left: 165px; transform: scale(0.85) rotate(12deg); }
+.flower13 { top: 68px; left: 365px; transform: scale(0.9) rotate(-18deg); }
+.flower14 { top: 88px; left: 155px; transform: scale(0.75) rotate(25deg); }
+.flower15 { top: 83px; left: 375px; transform: scale(0.8) rotate(-30deg); }
+.flower16 { top: 205px; left: 48px; transform: scale(0.7) rotate(40deg); }
+.flower17 { top: 198px; right: 48px; transform: scale(0.75) rotate(-40deg); }
+.flower24 { top: 52px; left: 205px; transform: scale(0.65) rotate(-8deg); }
+.flower25 { top: 58px; left: 325px; transform: scale(0.7) rotate(22deg); }
+.flower26 { top: 72px; left: 185px; transform: scale(0.6) rotate(-35deg); }
+.flower27 { top: 78px; left: 345px; transform: scale(0.7) rotate(28deg); }
+.flower28 { top: 108px; left: 145px; transform: scale(0.8) rotate(-15deg); }
+.flower29 { top: 103px; left: 385px; transform: scale(0.7) rotate(35deg); }
+.flower30 { top: 128px; left: 165px; transform: scale(0.65) rotate(-25deg); }
+.flower31 { top: 123px; left: 365px; transform: scale(0.75) rotate(18deg); }
+.flower32 { top: 148px; left: 175px; transform: scale(0.7) rotate(-40deg); }
+
+/* 잎사귀와 덩굴 */
+.vine {
+  position: absolute;
+  background: linear-gradient(45deg, 
+    #228B22 0%, 
+    #32CD32 20%, 
+    #90EE90 40%, 
+    #98FB98 60%, 
+    #F0FFF0 80%);
+  border-radius: 50% 10px 50% 10px;
+  box-shadow: 
+    inset 1px 1px 3px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 3px rgba(34, 139, 34, 0.3),
+    2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaf {
+  width: 15px;
+  height: 25px;
+}
+
+.vine1 { top: 63px; left: 132px; transform: rotate(-28deg) scale(1.1); }
+.vine2 { top: 87px; left: 342px; transform: rotate(23deg) scale(0.9); }
+.vine3 { top: 112px; left: 118px; transform: rotate(-48deg) scale(1.2); }
+.vine4 { top: 107px; left: 352px; transform: rotate(38deg) scale(0.85); }
+.vine5 { top: 142px; left: 58px; transform: rotate(-62deg) scale(1.05); }
+.vine6 { top: 137px; right: 58px; transform: rotate(62deg) scale(0.95); }
+.vine7 { top: 182px; left: 67px; transform: rotate(-18deg) scale(1.15); }
+.vine8 { top: 177px; right: 67px; transform: rotate(18deg) scale(0.9); }
+
+/* 작은 덩굴 장식 */
+.small-vine {
+  width: 8px;
+  height: 15px;
+}
+
+.vine9 { top: 55px; left: 200px; transform: rotate(10deg); }
+.vine10 { top: 60px; left: 330px; transform: rotate(-15deg); }
+.vine11 { top: 90px; left: 170px; transform: rotate(45deg); }
+.vine12 { top: 85px; left: 350px; transform: rotate(-35deg); }
+.vine13 { top: 75px; left: 210px; transform: rotate(-20deg); }
+.vine14 { top: 70px; left: 310px; transform: rotate(30deg); }
+.vine15 { top: 115px; left: 180px; transform: rotate(60deg); }
+.vine16 { top: 110px; left: 340px; transform: rotate(-50deg); }
+
+.hearts-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  pointer-events: none;
+}
+
+.heart-icon {
+  position: absolute;
+  font-size: 2rem;
+  cursor: pointer;
+  pointer-events: all;
+  filter: drop-shadow(0 0 8px rgba(255, 182, 193, 0.6));
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.heart-icon:hover {
+  filter: drop-shadow(0 0 15px rgba(255, 182, 193, 0.8)) drop-shadow(0 0 25px rgba(255, 182, 193, 0.4));
+  transform: scale(1.2) !important;
+}
+
+.guestbook-header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 80px 20px 40px;
+}
+
+.guestbook-title {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 2.5rem;
+  color: #c2185b;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(194, 24, 91, 0.4), 0 0 20px rgba(194, 24, 91, 0.2);
+  margin-bottom: 15px;
+  letter-spacing: 3px;
+}
+
+.guestbook-subtitle {
+  font-size: 1.1rem;
+  color: #ad1457;
+  margin-bottom: 0;
+  opacity: 0.8;
+}
+
+.add-message-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+  border: none;
+  color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-family: 'Syncopate', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+  transition: all 0.3s ease;
+}
+
+.add-message-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(255, 107, 157, 0.5);
+  background: linear-gradient(135deg, #ff8fab 0%, #f06292 100%);
+}
+
+.add-message-btn:active {
+  transform: translateY(0);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 182, 193, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  border: 1px solid rgba(255, 182, 193, 0.3);
+  box-shadow: 0 20px 60px rgba(255, 182, 193, 0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #ad1457;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 5px;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #e91e63;
+}
+
+.message-display {
+  text-align: center;
+}
+
+.message-author {
+  color: #c2185b;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(194, 24, 91, 0.3);
+}
+
+.message-text {
+  color: #8b5a6b;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  background: rgba(255, 182, 193, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 3px solid #ff6b9d;
+}
+
+.message-date {
+  color: #ad1457;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.form-modal {
+  max-width: 600px;
+}
+
+.message-form {
+  width: 100%;
+}
+
+.form-title {
+  color: #c2185b;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(194, 24, 91, 0.3);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  color: #8b5a6b;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid rgba(255, 182, 193, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #8b5a6b;
+  font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #ff6b9d;
+  box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
+  background: rgba(255, 255, 255, 1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+  border: none;
+  color: #ffffff;
+  padding: 18px;
+  border-radius: 10px;
+  font-family: 'Syncopate', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+  background: linear-gradient(135deg, #ff8fab 0%, #f06292 100%);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .guestbook-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .guestbook-subtitle {
+    font-size: 1rem;
+  }
+  
+  .modal-content {
+    padding: 30px 25px;
+    margin: 0 15px;
+  }
+  
+  .add-message-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    font-size: 0.8rem;
+  }
+  
+  .heart-icon {
+    font-size: 1.8rem;
+  }
+  
+  .hearts-container {
+    height: 50vh;
+    min-height: 300px;
+  }
+  
+  /* 웨딩 아치 반응형 */
+  .arch-shape {
+    width: 350px;
+    height: 250px;
+    transform: perspective(600px) rotateX(3deg);
+  }
+  
+  .arch-left, .arch-right {
+    width: 15px;
+    height: 200px;
+    top: 50px;
+  }
+  
+  .arch-left {
+    left: 35px;
+  }
+  
+  .arch-right {
+    right: 35px;
+  }
+  
+  .arch-top {
+    top: 35px;
+    left: 35px;
+    width: 280px;
+    height: 30px;
+  }
+  
+  .flower-large {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .flower-medium {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .flower-small {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .flower1 { top: 25px; left: 130px; }
+  .flower2 { top: 20px; left: 160px; }
+  .flower3 { top: 30px; left: 190px; }
+  .flower4 { top: 35px; left: 100px; }
+  .flower5 { top: 40px; left: 220px; }
+  
+  .flower6 { top: 60px; left: 30px; }
+  .flower7 { top: 90px; left: 25px; }
+  .flower8 { top: 120px; left: 30px; }
+  .flower9 { top: 60px; right: 30px; }
+  .flower10 { top: 90px; right: 25px; }
+  .flower11 { top: 120px; right: 30px; }
+  
+  .leaf {
+    width: 10px;
+    height: 18px;
+  }
+  
+  .small-vine {
+    width: 6px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .guestbook-header {
+    padding: 60px 15px 30px;
+  }
+  
+  .guestbook-title {
+    font-size: 1.8rem;
+  }
+  
+  .modal-content {
+    padding: 25px 20px;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+  
+  /* 모바일에서 더 작은 웨딩 아치 */
+  .arch-shape {
+    width: 280px;
+    height: 200px;
+    transform: perspective(500px) rotateX(2deg);
+  }
+  
+  .arch-left, .arch-right {
+    width: 12px;
+    height: 150px;
+    top: 40px;
+  }
+  
+  .arch-left {
+    left: 25px;
+  }
+  
+  .arch-right {
+    right: 25px;
+  }
+  
+  .arch-top {
+    top: 25px;
+    left: 25px;
+    width: 230px;
+    height: 25px;
+  }
+  
+  .flower-large {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .flower-medium {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .flower-small {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .flower1 { top: 15px; left: 105px; }
+  .flower2 { top: 10px; left: 130px; }
+  .flower3 { top: 20px; left: 155px; }
+  .flower4 { top: 25px; left: 80px; }
+  .flower5 { top: 30px; left: 180px; }
+}
