@@ -109,7 +109,7 @@ function App() {
                     <p className="couple-message">우리만의 영원을 시작합니다</p>
                   </div>
                   <p className="invitation-question">우리와 이야기를 시작하시겠어요?</p>
-                  <p className="noti-message">(수락하면 음성이 나와요)</p>
+                  <p className="noti-message">(수락하면 영상이 나와요)</p>
                   <div className="button-group">
                     <button className="start-button" onClick={() => handleStart(false)}>네</button>
                     <button className="start-button" onClick={() => handleStart(true)}>아니오</button>
