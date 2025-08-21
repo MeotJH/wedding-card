@@ -7,25 +7,20 @@ const MediaController = ({ onVideoEnd, isMuted, play, videoSrc }) => {
 
   useEffect(() => {
     if (play && videoRef.current) {
-      // 약간의 지연 후 비디오 재생 시도
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.currentTime = 0;
-          const playPromise = videoRef.current.play();
-          
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("Video play failed:", error);
-              // 재생 실패 시 다시 시도
-              setTimeout(() => {
-                if (videoRef.current) {
-                  videoRef.current.play().catch(e => console.log('Retry failed:', e));
-                }
-              }, 1000);
-            });
-          }
-        }
-      }, 100);
+      videoRef.current.currentTime = 0;
+      const playPromise = videoRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.error("Video play failed:", error);
+          // 재생 실패 시 다시 시도
+          setTimeout(() => {
+            if (videoRef.current) {
+              videoRef.current.play().catch(e => console.log('Retry failed:', e));
+            }
+          }, 500);
+        });
+      }
     }
   }, [play]);
 
@@ -48,6 +43,7 @@ const MediaController = ({ onVideoEnd, isMuted, play, videoSrc }) => {
         onEnded={handleVideoEnd}
         muted={isMuted}
         playsInline
+        preload="auto"
       />
     </div>
   );
