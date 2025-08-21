@@ -35,15 +35,118 @@
   to { opacity: 1; }
 }
 
-.welcome-message {
-  font-size: 1.8em; /* Slightly larger font */
-  margin-bottom: 5px; /* More space below message */
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* 준비 화면 스타일링 */
+.preparation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9));
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.preparation-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(100, 255, 218, 0.2);
+  border-top: 3px solid #64ffda;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.preparation-message {
+  font-size: 1.4rem;
+  font-weight: 300;
   text-align: center;
-  line-height: 1.6; /* Improved readability */
-  font-weight: 700; /* Bolder for impact */
-  color: #64ffda; /* Neon cyan for emphasis */
-  text-shadow: 0 0 5px rgba(100, 255, 218, 0.5), 0 0 10px rgba(100, 255, 218, 0.5); /* Cyberpunk glow */
-  max-width: 80%; /* Limit width for better line length */
+  color: #ccd6f6;
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+  margin: 0;
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+/* 명대사 스타일링 */
+.main-quote {
+  font-size: 2.2rem;
+  font-weight: 400;
+  text-align: center;
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+  text-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+  font-style: italic;
+  color: #ccd6f6;
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+/* 커플 소개 섹션 */
+.couple-intro {
+  margin: 40px 0;
+  padding: 20px 0;
+  border-top: 1px solid rgba(100, 255, 218, 0.2);
+  border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+  animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.couple-names {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 15px 0;
+  color: #64ffda;
+  text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+}
+
+.couple-message {
+  font-size: 1.3rem;
+  font-weight: 300;
+  text-align: center;
+  margin: 0;
+  color: #a8b2d1;
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
+}
+
+/* 초대 질문 */
+.invitation-question {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+  margin: 30px 0 20px 0;
+  line-height: 1.5;
+  color: #ccd6f6;
+  animation: fadeInUp 1.4s ease-out forwards;
 }
 
 .noti-message {
@@ -250,5 +353,35 @@
   100% {
     transform: translate(0);
     box-shadow: 0 0 15px rgba(100, 255, 218, 0.7);
+  }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .main-quote {
+    font-size: 1.8rem;
+    margin: 0 0 12px 0;
+  }
+  
+  .couple-names {
+    font-size: 2rem;
+  }
+  
+  .couple-message {
+    font-size: 1.1rem;
+  }
+  
+  .invitation-question {
+    font-size: 1.3rem;
+    margin: 25px 0 15px 0;
+  }
+  
+  .preparation-message {
+    font-size: 1.2rem;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
   }
 }

@@ -20,6 +20,8 @@ const Guestbook = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -42,8 +44,71 @@ const Guestbook = () => {
       setMessages(messagesData);
     } catch (error) {
       console.error('Error fetching messages:', error);
+    } finally {
+      setIsInitialLoading(false);
     }
   };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  // 일단 DB 로딩만 확인하고, 이미지는 별도로 처리
+  const isContentReady = !isInitialLoading;
+
+  // 스켈레톤 로딩 컴포넌트
+  const SkeletonLoader = () => (
+    <div className="skeleton-container">
+      <div className="skeleton-background">
+        {/* 파티클 효과 */}
+        <div className="background-particles">
+          {[...Array(20)].map((_, i) => (
+            <div 
+              key={i} 
+              className="particle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* 스켈레톤 아치 */}
+        <div className="skeleton-arch-container">
+          <div className="skeleton-arch"></div>
+          <div className="skeleton-loading-text">
+            <p>축복의 공간을 준비하고 있어요...</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* 스켈레톤 헤더 */}
+      <div className="skeleton-header">
+        <div className="skeleton-title"></div>
+        <div className="skeleton-subtitle"></div>
+      </div>
+      
+      {/* 스켈레톤 하트들 */}
+      <div className="skeleton-hearts-container">
+        {[...Array(8)].map((_, i) => (
+          <div 
+            key={i}
+            className="skeleton-heart"
+            style={{
+              left: `${Math.random() * 70 + 10}%`,
+              top: `${Math.random() * 60 + 20}%`,
+              animationDelay: `${i * 0.2}s`
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* 스켈레톤 버튼 */}
+      <div className="skeleton-button"></div>
+    </div>
+  );
 
   const handleHeartClick = (message) => {
     setSelectedMessage(message);
@@ -88,6 +153,10 @@ const Guestbook = () => {
     return { left: `${x}%`, top: `${y}%` };
   };
 
+  if (!isContentReady) {
+    return <SkeletonLoader />;
+  }
+
   return (
     <div className="guestbook-container">
       <div className="guestbook-background">
@@ -117,6 +186,7 @@ const Guestbook = () => {
             src="/assets/wedding_arch with_flowers.png" 
             alt="Wedding Arch with Flowers" 
             className="wedding-arch-image"
+            onLoad={handleImageLoad}
           />
           
         </div>

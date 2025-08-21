@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showPreparation, setShowPreparation] = useState(false);
   const [playMedia, setPlayMedia] = useState(false);
   const [showInvitation, setShowInvitation] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -39,7 +40,13 @@ function App() {
   const handleStart = (muted) => {
     setIsMuted(muted);
     setShowWelcome(false);
-    setPlayMedia(true);
+    setShowPreparation(true);
+    
+    // 3초 후 준비 화면에서 동영상으로 전환
+    setTimeout(() => {
+      setShowPreparation(false);
+      setPlayMedia(true);
+    }, 3000);
   };
 
   const handleSkipClick = () => {
@@ -87,12 +94,24 @@ function App() {
             <>
               {showWelcome ? (
                 <div className="welcome-container">
-                  <p className="welcome-message">진한과 수경의 청첩장</p>
-                  <p className="welcome-message">확인해 보시겠어요?</p>
+                  <p className="main-quote">사랑에 기한이 있다면</p>
+                  <p className="main-quote">만년으로 하고 싶다</p>
+                  <div className="couple-intro">
+                    <p className="couple-names">진한 ❤️ 수경</p>
+                    <p className="couple-message">우리만의 영원을 시작합니다</p>
+                  </div>
+                  <p className="invitation-question">우리의 이야기를 시작하시겠어요?</p>
                   <p className="noti-message">(수락하면 음성이 나와요)</p>
                   <div className="button-group">
                     <button className="start-button" onClick={() => handleStart(false)}>네</button>
                     <button className="start-button" onClick={() => handleStart(true)}>아니오</button>
+                  </div>
+                </div>
+              ) : showPreparation ? (
+                <div className="preparation-container">
+                  <div className="preparation-content">
+                    <div className="loading-spinner"></div>
+                    <p className="preparation-message">잠시만요, 특별한 순간을 준비하고 있어요...</p>
                   </div>
                 </div>
               ) : playMedia ? (
