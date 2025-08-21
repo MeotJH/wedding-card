@@ -32,15 +32,29 @@ function App() {
   const handleVideoEnd = useCallback(() => {
     setPlayMedia(false);
     setShowInvitation(true);
-    if (audioRef.current) {
-      audioRef.current.play().catch(e => console.log(e));
-    }
-  }, []);
+    // 비디오 종료 후 오디오 재생 시도
+    setTimeout(() => {
+      if (audioRef.current && !isMuted) {
+        audioRef.current.play().catch(e => {
+          console.log('Audio play failed after video:', e);
+        });
+      }
+    }, 500);
+  }, [isMuted]);
 
   const handleStart = (muted) => {
     setIsMuted(muted);
     setShowWelcome(false);
     setShowPreparation(true);
+    
+    // 사용자 인터랙션 후 오디오 컨텍스트 초기화
+    if (audioRef.current) {
+      audioRef.current.muted = muted;
+      if (!muted) {
+        // 사용자 상호작용 후 오디오 준비
+        audioRef.current.load();
+      }
+    }
     
     // 3초 후 준비 화면에서 동영상으로 전환
     setTimeout(() => {
@@ -100,7 +114,7 @@ function App() {
                     <p className="couple-names">진한 ❤️ 수경</p>
                     <p className="couple-message">우리만의 영원을 시작합니다</p>
                   </div>
-                  <p className="invitation-question">우리의 이야기를 시작하시겠어요?</p>
+                  <p className="invitation-question">우리와 이야기를 시작하시겠어요?</p>
                   <p className="noti-message">(수락하면 음성이 나와요)</p>
                   <div className="button-group">
                     <button className="start-button" onClick={() => handleStart(false)}>네</button>

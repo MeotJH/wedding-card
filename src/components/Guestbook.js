@@ -25,6 +25,26 @@ const Guestbook = () => {
 
   useEffect(() => {
     fetchMessages();
+    
+    // 이미지 프리로딩
+    const img = new Image();
+    img.onload = () => {
+      console.log('Image preloaded successfully');
+      setImageLoaded(true);
+    };
+    img.onerror = () => {
+      console.log('Image preload failed, setting as loaded anyway');
+      setImageLoaded(true);
+    };
+    img.src = "/assets/wedding_arch with_flowers.png";
+    
+    // 최대 5초 후 강제로 로딩 완료 처리
+    const fallbackTimer = setTimeout(() => {
+      console.log('Image loading timeout, forcing completion');
+      setImageLoaded(true);
+    }, 5000);
+    
+    return () => clearTimeout(fallbackTimer);
   }, []);
 
   const fetchMessages = async () => {
@@ -53,8 +73,8 @@ const Guestbook = () => {
     setImageLoaded(true);
   };
 
-  // 일단 DB 로딩만 확인하고, 이미지는 별도로 처리
-  const isContentReady = !isInitialLoading;
+  // DB와 이미지 모두 로드되어야 준비 완료
+  const isContentReady = !isInitialLoading && imageLoaded;
 
   // 스켈레톤 로딩 컴포넌트
   const SkeletonLoader = () => (
@@ -186,7 +206,14 @@ const Guestbook = () => {
             src="/assets/wedding_arch with_flowers.png" 
             alt="Wedding Arch with Flowers" 
             className="wedding-arch-image"
-            onLoad={handleImageLoad}
+            onLoad={() => {
+              console.log('Image loaded successfully');
+              handleImageLoad();
+            }}
+            onError={() => {
+              console.log('Image failed to load');
+              setImageLoaded(true); // 이미지 로드 실패해도 진행
+            }}
           />
           
         </div>

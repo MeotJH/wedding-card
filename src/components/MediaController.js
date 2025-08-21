@@ -6,10 +6,26 @@ const MediaController = ({ onVideoEnd, isMuted, play, videoSrc }) => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    if (play) {
-      videoRef.current.play().catch(error => {
-        console.error("Video play failed:", error);
-      });
+    if (play && videoRef.current) {
+      // 약간의 지연 후 비디오 재생 시도
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          const playPromise = videoRef.current.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.error("Video play failed:", error);
+              // 재생 실패 시 다시 시도
+              setTimeout(() => {
+                if (videoRef.current) {
+                  videoRef.current.play().catch(e => console.log('Retry failed:', e));
+                }
+              }, 1000);
+            });
+          }
+        }
+      }, 100);
     }
   }, [play]);
 
