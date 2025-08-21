@@ -45,7 +45,7 @@ function App() {
   const handleStart = (muted) => {
     setIsMuted(muted);
     setShowWelcome(false);
-    setShowPreparation(true);
+    setPlayMedia(true);
     
     // 사용자 인터랙션 후 오디오 컨텍스트 초기화
     if (audioRef.current) {
@@ -55,12 +55,6 @@ function App() {
         audioRef.current.load();
       }
     }
-    
-    // 3초 후 준비 화면에서 동영상으로 전환
-    setTimeout(() => {
-      setShowPreparation(false);
-      setPlayMedia(true);
-    }, 3000);
   };
 
   const handleSkipClick = () => {
@@ -119,13 +113,6 @@ function App() {
                   <div className="button-group">
                     <button className="start-button" onClick={() => handleStart(false)}>네</button>
                     <button className="start-button" onClick={() => handleStart(true)}>아니오</button>
-                  </div>
-                </div>
-              ) : showPreparation ? (
-                <div className="preparation-container">
-                  <div className="preparation-content">
-                    <div className="loading-spinner"></div>
-                    <p className="preparation-message">잠시만요, 특별한 순간을 준비하고 있어요...</p>
                   </div>
                 </div>
               ) : playMedia ? (
